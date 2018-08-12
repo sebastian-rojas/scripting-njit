@@ -1,0 +1,33 @@
+6-1) 
+my %last_name = qw{
+fred flintstone
+barney rubble
+wilma flintstone
+};
+print "Please enter a first name: ";
+chomp(my $name = <STDIN>);
+print "That's $name $last_name{$name}.\n";
+
+7-1)
+
+Make a program that prints each line of its input that mentions fred. (It
+shouldn’t do anything for other lines of input.) Does it match if your input string
+is Fred, frederick, or Alfred? Make a small text file with a few lines mentioning
+“fred flintstone” and his friends, then use that file as input to this program and the
+ones later in this section.
+
+while (<>) {
+if (/fred/) {
+print;
+ }
+}
+
+7-2) 
+
+Modify the previous program to allow Fred to match as well. Does it match
+now if your input string is Fred, frederick, or Alfred? (Add lines with these names
+to the text file.)
+
+Here’s one way to do it: change the pattern used in the first exercise’s answer
+to /[fF]red/. You could also have tried /(f|F)red/ or /fred|Fred/, but the character
+class is more efficient.

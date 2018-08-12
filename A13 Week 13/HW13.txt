@@ -1,0 +1,74 @@
+Chapter 12 - problem 2
+
+[2] Make a program to identify the oldest file named on the command line and
+report its age in days. What does it do if the list is empty? (That is, if no files are
+mentioned on the command line.)
+
+die "No file names supplied!\n" unless @ARGV;
+my $oldest_name = shift @ARGV;
+my $oldest_age = -M $oldest_name;
+foreach (@ARGV) {
+	my $age = -M;
+	($oldest_name, $oldest_age) = ($_, $age)
+		if $age > $oldest_age;
+}
+printf "The oldest file was %s, and it was %.1f days old.\n",
+	$oldest_name, $oldest_age;
+
+
+
+Chapter 13 - problems 1, 2 & 3
+
+1. Write a program to ask the user for a directory name, then change to that
+directory. If the user enters a line with nothing but whitespace, change to his or
+her home directory as a default. After changing, list the ordinary directory contents
+(not the items whose names begin with a dot) in alphabetical order. (Hint: will that
+be easier to do with a directory handle or with a glob?) If the directory change
+doesn’t succeed, just alert the user—but don’t try showing the contents.
+
+print "Which directory? (Default is your home directory) ";
+chomp(my $dir = <STDIN>);
+if ($dir =~ /\A\s*\Z/) { # A blank line
+  chdir or die "Can't chdir to your home directory: $!";
+} else {
+  chdir $dir or die "Can't chdir to '$dir': $!";
+}
+my @files = <*>;
+foreach (@files) {
+  print "$_\n";
+}
+
+
+2. Modify the program to include all files, not just the ones that don’t begin with
+a dot.
+
+print "Which directory? (Default is your home directory) ";
+chomp(my $dir = <STDIN>);
+if ($dir =~ /\A\s*\Z/) { # A blank line
+  chdir or die "Can't chdir tc your home directory:
+$!";
+} else {
+  chdir $dir or die "Can't chdir to '$dir': $!";
+}
+my @files = <.* *>; ## now includes .*
+foreach (sort @files) { ## now sorts
+  print "$_\n";
+}
+
+3. If you used a directory handle for the previous exercise, rewrite it to use a glob.
+Or if you used a glob, try it now with a directory handle.
+
+
+print 'Which directory? (Default is your home directory) ';
+chomp(my $dir = <STDIN>);
+if ($dir =~ /\A\s*\Z/) { # A blank line
+  chdir or die "Can't chdir to your home directory:
+$!";
+} else {
+  chdir $dir or die "Can't chdir to '$dir': $!";
+}
+opendir DOT, "." or die "Can't opendir dot: $!";
+foreach (sort readdir DOT) {
+  # next if /\A\./; ## if we were skipping dot files
+  print "$_\n";
+}

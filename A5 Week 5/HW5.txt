@@ -1,0 +1,88 @@
+Chapter 9 
+
+
+2) The tick_for example of using the ls command within a for loop appears, at least at first
+glance, to be a bit clumsy. Rewrite the tick_for script using a wildcard glob, such as *.txt.
+Make the output appear the same. Discuss at least one major difference between these scripts.
+
+echo “Using for loop.”
+cd /home/student
+for filename in *
+do
+echo $filename
+done
+
+---- This script changes the directory to /home/student------
+
+Chapter 10
+
+4)Write an alarm clock script that sleeps for a set number of seconds and then beeps repeatedly
+after that time has elapsed.
+
+#Required arguments
+
+if [ $# -eq 0 ]
+then
+	echo “Usage: $0 hh:mm [alarm-method]”
+	echo “eg. $0 13:30 \”mplayer /media/music/dr_octagon/01.mp3\” “
+	exit 1
+else
+	alarm_time=”$1”
+
+
+#Checks that format is correct
+
+	if [ ! `echo “$alarm_time” | sed -n ‘/[0-2][[:digit:]]:[0-60]/p’` ]
+	then
+		echo “Incorrect time specified, please use format hh:mm”
+		exit 1
+	fi
+fi
+
+
+# Numver of seconds in a minute
+
+seconds=1
+
+#Test if second argument is given, if not set bell to shell.
+
+if [ ! $2 ]
+then
+	bell=”echo -e \a”
+else
+	bell=$2
+fi
+
+# Function to only check the time once a minute
+checks_between_minute ()
+{
+	sleep $seconds
+
+#checking_timer is then called to look at the current time
+
+	checking_timer 
+}
+
+#checking_timer function
+checking_timer ()
+{
+	current_time=`date +%H:%M`
+	if [ “$current_time” = “$alarm_time” ]
+	then
+		wakeup
+	else
+		wait_between_checks
+	fi
+
+}
+# Ring - just rings the bell.
+ring ()
+{
+	echo -n “Wake up! Wake up!”
+	$bell
+	sleep 1
+	wakeup
+}
+
+#Script starts by calling checks_between_minute
+checks_between_minute

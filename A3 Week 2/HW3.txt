@@ -1,0 +1,113 @@
+Chapter 5 - problems 3 & 4
+
+
+3)
+
+pithy_statement=”Action, urgency, excellence”
+
+if [ $# -ge 1 ]
+then
+	date_required=$1
+	if [ $# -ge 2 ]
+	then
+		pithy_statement=$2
+	fi
+else
+	date_required=today
+fi
+
+wall <<EndOfText
+Please complete all TPS reports and have them
+on my desk by EOB $date_required.
+
+Your cooperation in this matter helps the smooth
+flow of our departmental structure.
+
+$pithy_statement!
+-Dick
+EndOfText
+
+echo “Message sent”
+
+
+4)
+
+
+case $# in
+0)
+	pithy_statement=”Action, urgency, excellence”
+	date_required=today
+	;;
+1)
+	pithy_statement=”Action, urgency, excellence”
+	date_required=$1
+	;;
+*)
+
+	pithy_statement=$2
+	date_required=$1
+	;;
+esac
+
+wall <<EndOfText
+Please complete all TPS reports and have them
+on my desk by EOB $date_required.
+
+Your cooperation in this matter helps the smooth
+flow of our departmental structure.
+
+$pithy_statement!
+-Dick
+EndOfText
+
+echo “Message sent”
+
+
+
+
+Chapter 6 - problems 4, 6 & 7
+
+
+4) ls -l $HOME | sed ‘s/micah/hacim/’
+
+
+6) 
+#! /bin/sed -f
+1 i\
+<html>\
+<head><title>Converted with sed</title></head>\
+<body bgcolor=”#ffffff”>\
+<pre>\
+
+s/&/\&amp;/g
+s/</\&lt;/g
+s/>/\&gt;/g
+
+$ a\
+</pre>\
+</body>\
+</html>
+
+
+7)
+#! /bin/sed -f
+1 i\
+<html>\
+<head><title>Converted with sed</title></head>\
+<body bgcolor=”#ffffff”>\
+<pre>\
+
+s/&/\&amp;/g
+s/</\&lt;/g
+s/>/\&gt;/g
+s/trout/<b>trout<\/b>/g
+s/^$/<p>/g
+
+$ a\
+</pre>\
+</body>\
+</html>
+
+
+
+

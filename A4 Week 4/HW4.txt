@@ -1,0 +1,40 @@
+1 Pipe your /etc/passwd file to awk, and print out the home directory of each user.
+
+$ cat /etc/passwd | awk -F: ‘{print $6}’
+
+
+3. Print nicely formatted column headings for each of the fields in the countries.txt file, using
+a variable to store your format specifier.
+
+BEGIN { myformat=”%-15s: %3s %16s %11s %12s %15s\n”
+printf myformat,
+“Country”, “TLD”, “Area in sq. km”, \
+“Population”, “Land lines”, “Cell phones”
+printf myformat,
+“-------”, “---”, “--------------”, \
+“----------”, “----------”, “-----------” }
+{ printf myformat, $1, $2, $3, $4, $5, $6 }
+
+4. Using the data from the countries.txt file, print the total ratio of cell phones to all the landlines
+in the world.
+
+{celltotal += $6; landtotal += $5 }
+END { print “Cell phones make up “ landtotal/celltotal “% of landlines” }
+
+5. Provide a total of all the fields in the countries.txt at the bottom of the output.
+
+BEGIN { myformat=”%-15s %3s %16s %11s %12s %12s\n”
+printf myformat,
+“Country”, “TLD”, “Area in sq. km”, \
+“Population”, “Land lines”, “Cell phones”
+printf myformat,
+“-------”, “---”, “--------------”, \
+“----------”, “----------”, “--- --- --- --” }
+{ printf myformat,
+$1, $2, $3, $4, $5, $6
+areatot += $3
+poptot += $4
+landtot += $5
+celltot += $6 }
+END { printf myformat,
+“\nTotals:”, NR, areatot, poptot, landtot, celltot “\n” }

@@ -1,0 +1,99 @@
+Chapter 8
+
+1. Using the pattern test program, make a pattern to match the string match. Try
+the program with the input string beforematchafter. Does the output show the
+three parts of the match in the right order?
+
+There’s one easy way to do it, and we showed it back in the chapter body. But if
+your output isn’t saying before<match>after as it should, you’ve chosen a hard way
+to do it.
+
+#!/usr/bin/perl
+while (<>) { 					# take one input line at a time
+	chomp;
+	if (/beforematchafter/) {
+		print "Matched: |$`<$&>$'|\n"; # the special match vars
+	} else {
+		print "No match: |$_|\n";
+	}
+}
+
+
+2. Using the pattern test program, make a pattern that matches if any word (in
+the \w sense of word) ends with the letter a. Does it match wilma but not barney?
+Does it match Mrs. Wilma Flintstone? What about wilma&fred? Try it on the sample
+text file from the Exercises in Chapter 7 (and add these test strings if they weren’t
+already in there).
+
+#!/usr/bin/perl
+while (<>) { 					# take one input line at a time
+	chomp;
+	if (/a\b/) {
+		print "Matched: |$`<$&>$'|\n"; # the special match vars
+	} else {
+		print "No match: |$_|\n";
+	}
+}
+
+
+
+/a\b/
+(Of course, that’s a pattern for use inside the pattern test program!) If your pattern
+mistakenly matches barney, you probably needed the word-boundary anchor.
+
+3. Modify the program from the previous exercise so that the word ending with
+the letter a is captured into $1. Update the code to display that variable’s contents
+in single quotes, something like $1 contains 'Wilma'.
+
+#!/usr/bin/perl
+while (<STDIN>) {
+ chomp;
+ if (/(\b\w*a\b)/) {
+  print "Matched: |$`<$&>$'|\n";
+  print "\$1 contains '$1'\n"; # The new output line
+} else {
+  print "No match: |$_|\n";
+ }
+}
+
+This is the same test program (with a new pattern), except that the one marked
+line has been added to print out $1.
+The pattern uses a pair of \b word-boundary anchors* inside the parentheses, although
+the pattern works the same way when they are placed outside. That’s because
+anchors correspond to a place in the string, but not to any characters in the
+string: anchors have “zero width.”
+
+
+Chapter 9 
+
+1.  Make a pattern that will match three consecutive copies of whatever is currently
+contained in $what. That is, if $what is fred, your pattern should match fred
+fredfred. If $what is fred|barney, your pattern should match fredfredbarney or
+barneyfredfred or barneybarneybarney or many other variations. (Hint: you should
+set $what at the top of the pattern test program with a statement like my $what =
+'fred|barney';.)
+
+/($what){3}/
+Once $what has been interpolated, this gives a pattern resembling /(fred|barney)
+{3}/. Without the parentheses, the pattern would be something like /fred|bar
+ney{3}/, which is the same as /fred|barneyyy/. So, the parentheses are required.
+
+
+4.  Extra credit exercise: write a program to add a copyright line to all of your
+exercise answers so far, by placing a line like:
+## Copyright (C) 20XX by Yours Truly
+in the file immediately after the “shebang” line. You should edit the files “in place,”
+keeping a backup. Presume that the program will be invoked with the filenames to
+edit already on the command line.
+
+$^I = ".bak"; # make backups
+while (<>) {
+if (/\A#!/) { # is it the shebang line?
+$_ .= "## Copyright (C) 20XX by Yours Truly\n";
+}
+print;
+}
+Invoke this program with the filenames you want to update. For example, if you’ve
+been naming your exercises ex01-1, ex01-2, and so on, so that they all begin with
+ex..., you would use:
+./fix_my_copyright ex*

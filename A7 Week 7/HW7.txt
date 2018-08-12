@@ -1,0 +1,90 @@
+________________________________________________________________________________________
+
+
+------------
+|Chapter 1 |
+------------
+
+3) Type in the second example program (from the previous section) and see what
+it prints. Hint: be careful to type those punctuation marks exactly as shown! Do
+you see how it changed the output of the command?
+
+@lines = `perldoc -u -f atan2`;
+foreach (@lines) {
+s/\w<([^>]+)>/\U$1/g;
+print;
+}
+
+
+________________________________________________________________________________________
+
+
+------------
+|Chapter 2 |
+------------
+
+4. Write a program that prompts for and reads two numbers (on separate lines of
+input) and prints out the product of the two numbers multiplied together.
+
+Code:
+print "Input first number: ";
+chomp($one = <STDIN>);
+print "Input second number: ";
+chomp($two = <STDIN>);
+$result = $one * $two;
+print "The result is $result.\n";
+
+
+
+
+5. Write a program that prompts for and reads a string and a number (on separate
+lines of input) and prints out the string the number of times indicated by the number
+on separate lines. (Hint: use the x operator.) If the user enters “fred” and “3”,
+the output should be three lines, each saying “fred”. If the user enters “fred” and
+“299792,” there may be a lot of output.
+
+Code:
+print "Enter string: ";
+$str = <STDIN>;
+print "Enter the number of times: ";
+chomp($num = <STDIN>);
+$result = $str x $num;
+print "The result is:\n$result";
+
+
+________________________________________________________________________________________
+
+
+------------
+|Chapter 3 |
+------------
+2. Write a program that reads a list of numbers (on separate lines) until end-ofinput
+and then prints for each number the corresponding person’s name from the
+list shown below. (Hardcode this list of names into your program. That is, it should
+appear in your program’s source code.) For example, if the input numbers were
+1, 2, 4, and 2, the output names would be fred, betty, dino, and betty:
+fred betty barney dino wilma pebbles bamm-bamm
+
+Code:
+@names = qw/ fred betty barney dino wilma pebbles bamm-bamm /;
+print "Enter some numbers from 1-7\n";
+chomp(@numbers = <STDIN>);
+foreach (@numbers) {
+print "$names[ $_ - 1 ]\n";
+}
+
+
+
+
+3. Write a program that reads a list of strings (on separate lines) until end-of-input.
+Then it should print the strings in code point order. That is, if you enter the strings
+fred, barney, wilma, betty, the output should show barney betty fred wilma. Are
+all of the strings on one line in the output or on separate lines? Could you make
+the output appear in either style?
+
+Code:
+chomp(@lines = <STDIN>);
+@sorted = sort @lines;
+print "@sorted\n";
+
+________________________________________________________________________________________

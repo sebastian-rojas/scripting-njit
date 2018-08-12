@@ -1,0 +1,84 @@
+--------------
+|Chapter 3 #2|
+--------------
+
+cd /home
+#If we want to do this for absolute files we do cd /home/*
+
+for filename in *
+do 
+	echo $filename
+done
+
+
+--------------
+|Chapter 3 #3|
+--------------
+
+
+DIRECTORY=/home/
+cd $DIRECTORY
+#If we want to do this for absolute files cd $DIRECTORY/* would suffice
+
+echo "Listing $DIRECTORY"
+
+for filename in *
+do
+	echo $filename
+done
+
+
+
+--------------
+|Chapter 3 #4|
+--------------
+
+echo -n "Enter directory to list: "
+read DIRECTORY
+cd $DIRECTORY
+echo "Listing $DIRECTORY"
+
+for filename in *
+do
+	echo $filename
+done
+
+
+
+--------------
+|Chapter 3 #5|
+--------------
+
+echo -n "Please enter the directory to list: "
+read DIRECTORY
+
+cd $DIRECTORY
+echo "Listing $DIRECTORY"
+
+for filename in *
+do
+	if [ -d $filename ]
+	then
+		echo "$filename/"
+	elif [ -x $filename ]
+	then
+		echo "$filename*"
+	else
+		echo $filename
+	fi
+done
+
+--------------
+|Chapter 4 #2|
+--------------
+
+for directory in $*
+do
+	echo "$directory:"
+	cd $directory
+	for filename in *
+	do
+		echo $filename
+	done
+	echo
+done

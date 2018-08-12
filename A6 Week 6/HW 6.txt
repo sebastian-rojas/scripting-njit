@@ -1,0 +1,100 @@
+Chapter 11
+
+1)
+Even though the script runs, it is incorrect. The script acts similar to the LS command.
+It should change to the given directory and then list the files in the directory. If the file is executable,
+it should append a *. If the file is a directory, it should append a /. The output would be similar
+to the -CF cmd.
+
+
+- The first statement should be given a !. So, if the passed-in directory
+  does not exist, then it would use /usr/local. 
+- The then-fi block sets the variable directroy, not directory.
+- The cd command changes to the directory held in the variable directroy.
+- The elif condition is negated and we would have to remove the exclamation mark.
+
+
+Corrected Script: 
+
+directory=$1
+if [ ! -e $directory ]
+then
+	echo “Error: You must pass in the name of a directory.”
+	exit -1
+fi
+cd $directory
+for filename in *
+do
+	echo -n $filename
+	if [ -d $filename ]
+	then
+		echo “/”
+	elif [ -x $filename ]
+	then
+		echo “*”
+	else
+		echo
+	fi
+done
+
+
+
+
+2)
+This is a simple script that checks the sales tax and if the amount is greater than $200, it will offer free shipping.
+
+- Missing double quotes on the first echo statement
+- Free shipping echo is also missing double quotes. 
+- Since the text is calling a subshell, the missing quotes flags an error with yes or no text. 
+
+The corrected script would look like this: 
+
+#!/bin/sh
+# Using bc for math,
+# calculates sales tax.
+echo -n “Please enter the amount of purchase: “
+read amount
+echo
+
+echo -n “Please enter the total sales tax rate: “
+read rate
+echo
+
+result=$( echo “
+scale=2; tax=$amount*$rate/100.00;total=$amount+tax;print total” | bc )
+
+if [ $( expr “$result > 200” ) ]
+then
+	echo You could qualify for a special free shipping rate.
+	echo -n Do you want to? “(yes or no) “
+	read shipping_response
+	if [ $shipping_response -eq “yes” ]
+	then
+		echo “Free shipping selected.”
+	fi
+fi
+echo “The total with sales tax = \$ $result.”
+echo “Thank you for shopping with the Bourne Shell.”
+
+
+
+
+
+
+Chapter 13
+3)
+Solution:
+
+filesystem=$1
+df “$filesystem” > /dev/null 2&>1
+result=$?
+if [ “$result” == 0 ]
+then
+	entry=`df -k $filesystem | tail -1`
+	# Split out the amount of space free as well as in-use percentage.
+	free=`echo $entry | cut -d’ ‘ -f4`
+	in_use=`echo $entry | cut -d’ ‘ -f5 | cut -d’%’ -f1 `
+	echo “Filesystem $filesystem is $in_use% used with $free KB free.”
+else
+	echo “ERROR: Filesystem $filesystem not found.”
+fi

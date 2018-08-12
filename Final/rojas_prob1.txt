@@ -1,0 +1,43 @@
+use strict;
+use warnings;
+
+my @line;
+my @users;
+my $iterator;
+my $uid;
+
+#Open the filename /etc/passwd
+open FILE_HANDLE, '/etc/passwd';
+
+while (<FILE_HANDLE>) {
+chomp;
+next if /^\s*#/; # ignore comments
+@line = split /:/;
+
+my %hash_value;
+
+@hash_value{'username', 'x','uid' } = @line;
+push @users, \%hash_value;
+
+}
+
+#Answer 1: 23 accounts with UID’s between 0 and 499
+print "Answer 1: accounts with UID s between 0 and 499\n";
+
+for my $user (@users) {
+$uid = $user->{uid};
+if( $uid <= 499){
+print "$user->{username} \n";
+}
+}
+
+#Answer: accounts with UID’s greater or equal to 500
+print "Answer 2: accounts with UID s greater or equal to 500\n";
+
+for my $user (@users){
+$uid = $user->{uid};
+if($uid > 500){
+print "$user->{username}\n";
+
+}
+}

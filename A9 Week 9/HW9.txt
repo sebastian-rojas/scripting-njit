@@ -1,0 +1,49 @@
+__________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________
+Chapter 4 
+2) Using the subroutine from the previous problem, make a program to calculate
+the sum of the numbers from 1 to 1,000.
+
+sub total {
+my $sum; # local variable
+foreach (@_) {
+$sum += $_;
+}
+$sum;
+}
+print "The sum of the numbers from 1 to 1000 is: ", total(1..1000), ".\n"; #this prints the sum using the total subroutine
+__________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________
+Chapter 5
+2) Write a program that asks the user to enter a list of strings on separate lines,
+printing each string in a right-justified, 20-character column. To be certain that the
+output is in the proper columns, print a “ruler line” of digits as well. (This is simply
+a debugging aid.) Make sure that you’re not using a 19-character column by mistake!
+For example, entering hello, good-bye should give output something like this:
+123456789012345678901234567890123456789012345678901234567890
+hello
+good-bye
+
+print "Enter lines and press Ctrl-D:\n";
+chomp(my @lines = <STDIN>);
+print "1234567890" x 7, "12345\n"; 
+foreach (@lines) {
+printf "%20s\n", $_;
+}
+__________________________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________
+3) Modify the previous program to let the user choose the column width, so that
+entering 30, hello, good-bye (on separate lines) would put the strings at the 30th
+column. (Hint: see “Interpolation of Scalar Variables into Strings” on page 32 in
+Chapter 2, about controlling variable interpolation.) For extra credit, make the
+ruler line longer when the selected width is larger.
+
+print "Enter column width? ";
+chomp(my $width = <STDIN>);
+print "Enter some lines, then press Ctrl-Z:\n"; 
+chomp(my @lines = <STDIN>);
+print "1234567890" x (($width+9)/10), "\n"; # ruler line as needed
+foreach (@lines) {
+printf "%${width}s\n", $_;
+}
+
